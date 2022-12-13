@@ -354,4 +354,4 @@ if enemy.hp <= 0:
 if char.hp <= 0:
     print("You´ve lost")
 """
-
+'schwul'
