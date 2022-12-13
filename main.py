@@ -184,7 +184,7 @@ instructions.grid(columnspan=1, column=1, row=0)
 
 def game():
 
-
+    print("Game started")
 
     def choosemove1():
         if not enemy.hp < 1 and not char.hp < 1:
@@ -196,15 +196,19 @@ def game():
 
             enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
             enemyhp.grid(columnspan=2, column=2, row=1)
-        elif enemy.hp < 1:
+
+        if enemy.hp < 1:
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
 
-        elif char.hp < 1:
+        if char.hp < 1:
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
+
+
+
 
     def choosemove2():
         if not enemy.hp < 1 and not char.hp < 1:
@@ -216,14 +220,20 @@ def game():
 
             enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
             enemyhp.grid(columnspan=2, column=2, row=1)
-        elif enemy.hp < 1:
+
+        if enemy.hp < 1:
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
-        elif char.hp < 1:
+        if char.hp < 1:
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
+
+
+
+
+
 
     screen = tk.Canvas(window, width=600, height=600)
     screen.grid(columnspan=4, rowspan=4)
@@ -231,23 +241,20 @@ def game():
     charhp = tk.Label(window, text=char.name + "  " + str(char.hp), font="Raleway")
     charhp.grid(columnspan=2, column=0, row=0)
 
-
     enemyhp = tk.Label(window, text=enemy.name + "  " + str(enemy.hp), font="Raleway")
     enemyhp.grid(columnspan=2, column=2, row=1)
 
-
     move1_text = tk.StringVar()
-    move1button = tk.Button(window, textvariable=move1_text, command=lambda:choosemove1(), font="Raleway", bg="yellow", fg="black", height=2, width=15)
+    move1button = tk.Button(window, textvariable=move1_text, command=lambda: choosemove1(), font="Raleway",
+                            bg="yellow", fg="black", height=2, width=15)
     move1_text.set(char.moveone[0].upper() + char.moveone[1:])
     move1button.grid(columnspan=2, column=4, row=0)
 
     move2_text = tk.StringVar()
-    move2button = tk.Button(window, textvariable=move2_text, command=lambda: choosemove2(), font="Raleway", bg="yellow",fg="black", height=2, width=15)
+    move2button = tk.Button(window, textvariable=move2_text, command=lambda: choosemove2(), font="Raleway",
+                            bg="yellow", fg="black", height=2, width=15)
     move2_text.set(char.movetwo[0].upper() + char.movetwo[1:])
     move2button.grid(columnspan=2, column=4, row=2)
-
-
-
 
 
 
@@ -309,49 +316,4 @@ squirt_btn.grid(column=2, row=1)
 window.mainloop()
 
 
-"""
-if starter == "bulbasaur":
-    enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam")
-    char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip")
 
-if starter == "squirtle":
-    enemy = Poke1("Charmander", "fire",70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember")
-    char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam")
-
-if starter == "charmander":
-    enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip")
-    char = Poke1("Charmander", "fire",80, 80, 80, ["grass", "test"], ["water", "test"], "tackle", "ember")
-
-
-
-
-
-
-
-while enemy.hp > 0 and char.hp > 0:
-    char.moveinf()
-    choosemove = int(input("Which Move do you want to use? 1,2 :"))
-    if choosemove == 1:
-        print("You have choosen move 1")
-        char.move1()
-
-    if choosemove == 2:
-        print("You have choosen move 2")
-        char.move2()
-
-    enemymove = random.randrange(1, 3)
-    if enemymove == 1:
-        print("Enemy has choosen move 1")
-        enemy.move1enemy()
-
-    if enemymove == 2:
-        print("Enemy has choosen move 2")
-        enemy.move2enemy()
-
-if enemy.hp <= 0:
-    print("You´ve won")
-
-if char.hp <= 0:
-    print("You´ve lost")
-"""
-'schwul'
