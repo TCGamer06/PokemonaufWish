@@ -2,7 +2,11 @@ import random
 import tkinter as tk
 
 
+
 findmg = None
+
+
+
 
 
 class Pokemon():
@@ -117,10 +121,12 @@ class pokemon_moves():
 
 
 class Poke1(pokemon_moves, Pokemon):
-    def __init__(self, name, type, hp, defe, atk, res, weak, moveone, movetwo):
+    def __init__(self, name, type, hp, defe, atk, res, weak, moveone, movetwo, movethree, movefour):
         Pokemon.__init__(self, name, type, hp, defe, atk, res, weak)
         self.moveone = moveone
         self.movetwo = movetwo
+        self.movethree = movethree
+        self.movefour = movefour
 
     def move1(self, move=None, user="char"):
         if move is None:
@@ -141,6 +147,26 @@ class Poke1(pokemon_moves, Pokemon):
         if move is None:
             move = self.movetwo
         pokemon_moves.atklist(self, move=move, user=user)
+    
+    def move3(self, move=None, user="char"):
+        if move is None:
+            move = self.movethree
+        pokemon_moves.atklist(self, move=move, user=user)
+
+    def move4(self, move=None, user="char"):
+        if move is None:
+            move = self.movefour
+        pokemon_moves.atklist(self, move=move, user=user)
+
+    def move3enemy(self, move=None, user="enemy"):
+        if move is None:
+            move = self.movethree
+        pokemon_moves.atklist(self, move=move, user=user)
+
+    def move4enemy(self, move=None, user="enemy"):
+        if move is None:
+            move = self.movefour
+        pokemon_moves.atklist(self, move=move, user=user)
 
     def moveinf(self):
         print("1: " + self.moveone[0].upper() + self.moveone[1:] + ",2: " + self.movetwo[0].upper() + self.movetwo[1:])
@@ -159,23 +185,32 @@ def enemymovex():
 def create_mons():
     global enemy, char
     if starter == "bulbasaur":
-        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam")
-        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip")
+        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", None, None)
+        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", "bubblebeam", None)
 
     if starter == "squirtle":
-        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember")
-        char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam")
+        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None)
+        char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", None, None)
 
     if starter == "charmander":
-        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip")
-        char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "test"], ["water", "test"], "tackle", "ember")
+        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None)
+        char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None)
+
 
 
 window = tk.Tk()
+
+spritedict = {
+    "charmander" : tk.PhotoImage(file="charmander.png", height=150, width=150),
+    "bulbasaur" : tk.PhotoImage(file="bulbasaur.png", height=150, width=150),
+    "squirtle" : tk.PhotoImage(file="squirtle.png", height=150, width=150),
+}
+
+
 window.title("Pokemon auf Wish")
 window.resizable(False, False)
 
-screen = tk.Canvas(window, width=600, height=600)
+screen = tk.Canvas(window, width=1600, height=900)
 screen.grid(columnspan=3, rowspan=3)
 
 instructions = tk.Label(window, text="Choose your Starter", font="Raleway")
@@ -186,16 +221,20 @@ def game():
 
     print("Game started")
 
+    def updatehp():
+
+        charhp = tk.Label(window, text=char.name + "  " + str(int(char.hp)), font="Raleway")
+        charhp.grid(columnspan=2, column=0, row=1)
+
+        enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
+        enemyhp.grid(columnspan=2, column=2, row=3)
+
     def choosemove1():
         if not enemy.hp < 1 and not char.hp < 1:
             print("You have choosen move 1")
             char.move1()
             enemymovex()
-            charhp = tk.Label(window, text=char.name + "  " + str(int(char.hp)), font="Raleway")
-            charhp.grid(columnspan=2, column=0, row=0)
-
-            enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
-            enemyhp.grid(columnspan=2, column=2, row=1)
+            updatehp()
 
         if enemy.hp < 1:
             clear_frame()
@@ -215,11 +254,39 @@ def game():
             print("You have choosen move 2")
             char.move2()
             enemymovex()
-            charhp = tk.Label(window, text=char.name + "  " + str(int(char.hp)), font="Raleway")
-            charhp.grid(columnspan=2, column=0, row=0)
+            updatehp()
 
-            enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
-            enemyhp.grid(columnspan=2, column=2, row=1)
+        if enemy.hp < 1:
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+        if char.hp < 1:
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+    
+    def choosemove3():
+        if not enemy.hp < 1 and not char.hp < 1:
+            print("You have choosen move 3")
+            char.move3()
+            enemymovex()
+            updatehp()
+
+        if enemy.hp < 1:
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+        if char.hp < 1:
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+    
+    def choosemove4():
+        if not enemy.hp < 1 and not char.hp < 1:
+            print("You have choosen move 4")
+            char.move4()
+            enemymovex()
+            updatehp()
 
         if enemy.hp < 1:
             clear_frame()
@@ -235,14 +302,16 @@ def game():
 
 
 
-    screen = tk.Canvas(window, width=600, height=600)
+    screen = tk.Canvas(window, width=1600, height=900)
     screen.grid(columnspan=4, rowspan=4)
 
-    charhp = tk.Label(window, text=char.name + "  " + str(char.hp), font="Raleway")
-    charhp.grid(columnspan=2, column=0, row=0)
+    charsprite = tk.Label(window, image=spritedict[f"{char.name.lower()}"])
+    charsprite.grid(columnspan=2, column=0, row=0)
 
-    enemyhp = tk.Label(window, text=enemy.name + "  " + str(enemy.hp), font="Raleway")
-    enemyhp.grid(columnspan=2, column=2, row=1)
+    enemysprite = tk.Label(window, image=spritedict[f"{enemy.name.lower()}"])
+    enemysprite.grid(columnspan=2, column=2, row=2)
+
+    updatehp()
 
     move1_text = tk.StringVar()
     move1button = tk.Button(window, textvariable=move1_text, command=lambda: choosemove1(), font="Raleway",
@@ -254,7 +323,19 @@ def game():
     move2button = tk.Button(window, textvariable=move2_text, command=lambda: choosemove2(), font="Raleway",
                             bg="yellow", fg="black", height=2, width=15)
     move2_text.set(char.movetwo[0].upper() + char.movetwo[1:])
-    move2button.grid(columnspan=2, column=4, row=2)
+    move2button.grid(columnspan=2, column=4, row=1)
+
+    move3_text = tk.StringVar()
+    move3button = tk.Button(window, textvariable=move3_text, command=lambda: choosemove3(), font="Raleway",
+                            bg="yellow", fg="black", height=2, width=15)
+    move3_text.set(char.movethree[0].upper() + char.movethree[1:])
+    move3button.grid(columnspan=2, column=4, row=2)
+
+    move4_text = tk.StringVar()
+    move4button = tk.Button(window, textvariable=move4_text, command=lambda: choosemove4(), font="Raleway",
+                            bg="yellow", fg="black", height=4, width=15)
+    move4_text.set(char.movefour[0].upper() + char.movefour[1:])
+    move4button.grid(columnspan=4, column=4, row=3)
 
 
 
