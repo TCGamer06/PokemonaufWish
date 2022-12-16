@@ -32,10 +32,10 @@ class pokemon_moves():
 
         if enemy.typev in char.res:
             findmg *= 0.7
-        round(char.hp, 2)
+        findmg = findmg * (round(random.uniform(0.85, 1.15), 2))
+
         print(char.hp)
         char.hp = char.hp - findmg
-        round(char.hp, 2)
         print(char.hp)
 
 
@@ -47,6 +47,7 @@ class pokemon_moves():
 
         if char.typev in enemy.res:
             findmg *= 0.7
+        findmg = findmg * (round(random.uniform(0.85, 1.15), 2))
         round(enemy.hp, 2)
         print(enemy.hp)
         enemy.hp = enemy.hp - findmg
@@ -72,52 +73,49 @@ class pokemon_moves():
         self.typev = "fire"
         self.dmg = 40
 
-    def atklist(self, move, user):
-        atkmove = move
-        usemover = user
+    def run_attack(self, move, user):
+        match move:
+            case "tackle":
+                pokemon_moves.tackle(self)
+                if user == "char":
+                    pokemon_moves.charatk(self)
+                elif user == "enemy":
+                    pokemon_moves.enemyatk(self)
+                print(self.name + " used Tackle")
 
-        '''
-        pokemon_moves.run_attack(attack:string)
+            case "grasswhip":
+                pokemon_moves.grasswhip(self)
+                if user == "char":
+                    pokemon_moves.charatk(self)
+                elif user == "enemy":
+                    pokemon_moves.enemyatk(self)
+                print(self.name + " used Grasswhip")
+
+            case "bubblebeam":
+                pokemon_moves.bubblebeam(self)
+                if user == "char":
+                    pokemon_moves.charatk(self)
+                elif user == "enemy":
+                    pokemon_moves.enemyatk(self)
+                print(self.name + " used Bubblebeam")
+
+            case "ember":
+                pokemon_moves.ember(self)
+                if user == "char":
+                    pokemon_moves.charatk(self)
+                elif user == "enemy":
+                    pokemon_moves.enemyatk(self)
+                print(self.name + " used Ember")
+                
+                    
         
-        def run_attack(attack: str):
-            match attack:
-                case "tackle":
-                    -- tackle attacke --
-                
-                case  "weed":
-                    -- weed attacke --
-                
-                case _:
-                    alle anderen faelle
-        '''
-        if atkmove == "tackle":
-            pokemon_moves.tackle(self)
-            if usemover == "char":
-                pokemon_moves.charatk(self)
-            elif usemover == "enemy":
-                pokemon_moves.enemyatk(self)
-            print(self.name + " used Tackle")
-        if atkmove == "grasswhip":
-            pokemon_moves.grasswhip(self)
-            if usemover == "char":
-                pokemon_moves.charatk(self)
-            elif usemover == "enemy":
-                pokemon_moves.enemyatk(self)
-            print(self.name + " used Grasswhip")
-        if atkmove == "bubblebeam":
-            pokemon_moves.bubblebeam(self)
-            if usemover == "char":
-                pokemon_moves.charatk(self)
-            elif usemover == "enemy":
-                pokemon_moves.enemyatk(self)
-            print(self.name + " used Bubblebeam")
-        if atkmove == "ember":
-            pokemon_moves.ember(self)
-            if usemover == "char":
-                pokemon_moves.charatk(self)
-            elif usemover == "enemy":
-                pokemon_moves.enemyatk(self)
-            print(self.name + " used Ember")
+        
+            
+        
+            
+        
+            
+        
 
 
 class Poke1(pokemon_moves, Pokemon):
@@ -131,69 +129,77 @@ class Poke1(pokemon_moves, Pokemon):
     def move1(self, move=None, user="char"):
         if move is None:
             move = self.moveone
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move2(self, move=None, user="char"):
         if move is None:
             move = self.movetwo
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move1enemy(self, move=None, user="enemy"):
         if move is None:
             move = self.moveone
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move2enemy(self, move=None, user="enemy"):
         if move is None:
             move = self.movetwo
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
     
     def move3(self, move=None, user="char"):
         if move is None:
             move = self.movethree
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move4(self, move=None, user="char"):
         if move is None:
             move = self.movefour
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move3enemy(self, move=None, user="enemy"):
         if move is None:
             move = self.movethree
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def move4enemy(self, move=None, user="enemy"):
         if move is None:
             move = self.movefour
-        pokemon_moves.atklist(self, move=move, user=user)
+        pokemon_moves.run_attack(self, move=move, user=user)
 
     def moveinf(self):
         print("1: " + self.moveone[0].upper() + self.moveone[1:] + ",2: " + self.movetwo[0].upper() + self.movetwo[1:])
 
 
 def enemymovex():
-    enemymove = random.randrange(1, 3)
+    enemymove = random.randrange(1, 5)
     if enemymove == 1:
-        print("Enemy has choosen move 1")
+        print(f"{enemy.name} has choosen move 1")
         enemy.move1enemy()
 
     if enemymove == 2:
-        print("Enemy has choosen move 2")
+        print(f"{enemy.name} has choosen move 2")
         enemy.move2enemy()
+
+    if enemymove == 3:
+        print(f"{enemy.name} has choosen move 3")
+        enemy.move3enemy()
+
+    if enemymove == 4:
+        print(f"{enemy.name} has choosen move 4")
+        enemy.move4enemy()
 
 def create_mons():
     global enemy, char
     if starter == "bulbasaur":
-        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", None, None)
-        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", "bubblebeam", None)
+        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", "tackle", "bubblebeam")
+        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None)
 
     if starter == "squirtle":
-        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None)
+        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", "tackle", "ember")
         char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", None, None)
 
     if starter == "charmander":
-        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None)
+        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", "tackle", "grasswhip")
         char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None)
 
 
@@ -297,7 +303,7 @@ def game():
             game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
 
-
+    
 
 
 
