@@ -1,4 +1,5 @@
 import random
+import time
 import tkinter as tk
 
 
@@ -9,7 +10,7 @@ findmg = None
 
 
 
-class Pokemon():
+class Pokemon:
     def __init__(self, name, type, hp, defe, atk, res, weak):
         self.name = name
         self.type = type
@@ -73,6 +74,11 @@ class pokemon_moves():
         self.typev = "fire"
         self.dmg = 40
 
+    def elektro_ball(self):
+        # elektro ball
+        self.typev = "elektro"
+        self.dmg = 40
+
     def run_attack(self, move, user):
         match move:
             case "tackle":
@@ -106,6 +112,13 @@ class pokemon_moves():
                 elif user == "enemy":
                     pokemon_moves.enemyatk(self)
                 print(self.name + " used Ember")
+            case "elektro_ball":
+                pokemon_moves.elektro_ball(self)
+                if user == "char":
+                    pokemon_moves.charatk(self)
+                elif user == "enemy":
+                    pokemon_moves.enemyatk(self)
+                print(self.name + " used Elektro Ball")
                 
                     
         
@@ -166,9 +179,6 @@ class Poke1(pokemon_moves, Pokemon):
             move = self.movefour
         pokemon_moves.run_attack(self, move=move, user=user)
 
-    def moveinf(self):
-        print("1: " + self.moveone[0].upper() + self.moveone[1:] + ",2: " + self.movetwo[0].upper() + self.movetwo[1:])
-
 
 def enemymovex():
     enemymove = random.randrange(1, 5)
@@ -191,16 +201,16 @@ def enemymovex():
 def create_mons():
     global enemy, char
     if starter == "bulbasaur":
-        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", "tackle", "bubblebeam")
-        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None)
+        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", "tackle", "bubblebeam")
+        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "grass"], ["fire", "flying"], "tackle", "grasswhip", None, None)
 
     if starter == "squirtle":
-        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", "tackle", "ember")
-        char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "test"], "tackle", "bubblebeam", None, None)
+        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", "tackle", "ember")
+        char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", None, None)
 
     if starter == "charmander":
-        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", "tackle", "grasswhip")
-        char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None)
+        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "grass"], ["fire", "flying"], "tackle", "grasswhip", "tackle", "grasswhip")
+        char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", None, None)
 
 
 
@@ -210,6 +220,7 @@ spritedict = {
     "charmander" : tk.PhotoImage(file="charmander.png", height=150, width=150),
     "bulbasaur" : tk.PhotoImage(file="bulbasaur.png", height=150, width=150),
     "squirtle" : tk.PhotoImage(file="squirtle.png", height=150, width=150),
+    "pikachu" : tk.PhotoImage(file="pikachu.png", height=150, width=150)
 }
 
 
@@ -351,6 +362,69 @@ def game():
     if char.hp <= 0:
         print("You´ve lost")
 
+def charchoose(stats):
+    global char
+    char = Poke1(stats[0],stats[1],stats[2],stats[3],stats[4],stats[5],stats[6],stats[7],stats[8],stats[9],stats[10])
+    clear_frame()
+    custombuttonenemy(
+        ["Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", None, None], 0,
+        0)
+    custombuttonenemy(
+        ["Charmander", "fire", 70, 65, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", None, None], 0, 1)
+    custombuttonenemy(
+        ["Bulbasaur", "grass", 80, 60, 75, ["water", "grass"], ["fire", "test"], "tackle", "grasswhip", None, None], 0,
+        2)
+    custombuttonenemy(["Pikachu", "elektro", 90, 55, 82, ["elektro", "grass"], ["water", "flying"], "tackle", "elektro_ball", "grasswhip", None], 0, 3)
+
+
+    
+
+def custombuttonchar(stats , loc1, loc2):
+    poke = tk.Button(window, text=stats[0], command=lambda:charchoose(stats),font="Raleway", bg="violet", fg="white",
+                    height=2, width=15)
+    poke.grid(column=loc1, row=loc2)
+
+
+def enemychoose(stats):
+    global enemy
+    if stats[9] == None:
+        stats[9] = stats[7]
+    if stats[10] == None:
+        stats[10] = stats[8]
+    enemy = Poke1(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], stats[8], stats[9],
+                 stats[10])
+    clear_frame()
+    game()
+
+
+
+def custombuttonenemy(stats, loc1, loc2):
+    poke = tk.Button(window, text=stats[0], command=lambda: enemychoose(stats), font="Raleway", bg="yellow", fg="black",
+                     height=2, width=15)
+    poke.grid(column=loc1, row=loc2)
+    
+    
+
+def customgame():
+    status = 0
+    customg_text.set("Custom choosen")
+
+    clear_frame()
+    custombuttonchar(["Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "elektro"], "tackle", "bubblebeam", None, None],
+                     0, 0)
+    custombuttonchar(["Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None], 0, 1)
+    custombuttonchar(["Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None], 0, 2)
+    custombuttonchar(
+        ["Pikachu", "elektro", 90, 55, 82, ["elektro", "grass"], ["water", "flying"], "tackle", "elektro_ball",
+         "grasswhip", None], 0, 3)
+
+
+
+
+
+
+
+
 
 def clear_frame():
    for widgets in window.winfo_children():
@@ -396,6 +470,12 @@ squirt_btn = tk.Button(window, textvariable=squirt_text, command=lambda:squirt()
 squirt_text.set("Squirtle")
 squirt_btn.grid(column=2, row=1)
 
+
+customg_text = tk.StringVar()
+customg_button = tk.Button(window, textvariable=customg_text, command=lambda:customgame(), font="Raleway", bg="violet", fg="white",
+                           height=2, width=15)
+customg_text.set("Fight Custom")
+customg_button.grid(column=1, row=2)
 
 
 
