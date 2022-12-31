@@ -6,19 +6,59 @@ import tkinter as tk
 
 findmg = None
 
+weakdict = {
+    "normal": ["fighting"],
+    "grass": ["fire", "poison", "flying", "bug", "ice"],
+    "fire": ["ground", "rock", "water"],
+    "water": ["electro", "grass"],
+    "fighting": ["flying", "psychic", "fairy"],
+    "flying": ["rock", "electro", "ice"],
+    "poison": ["ground", "psychic"],
+    "ground": ["water", "grass", "ice"],
+    "rock": ["fighting", "ground", "steel", "water", "grass"],
+    "bug": ["flying", "rock", "fire"],
+    "ghost": ["ghost", "dark"],
+    "steel": ["fighting", "ground", "fire"],
+    "electro": ["ground"],
+    "psychic": ["bug", "ghost", "dark"],
+    "ice": ["fighting", "rock", "steel", "fire"],
+    "dragon": ["ice", "dragon", "fairy"],
+    "dark": ["fighting", "bug", "fairy"],
+    "fairy": ["poison", "steel"]
+}
 
+resdict = {
+    "normal": ["ghost"],
+    "grass": ["ground", "water", "grass", "electro"],
+    "fire": ["bug", "steel", "fire", "grass", "ice", "fairy"],
+    "water": ["steel", "fire", "water", "ice"],
+    "fighting": ["rock", "bug", "dark"],
+    "flying": ["ground", "fighting", "bug", "grass"],
+    "poison": ["fighting", "poison", "bug", "grass", "fairy"],
+    "ground": ["electro", "poison", "rock"],
+    "rock": ["normal", "flying", "poison", "fire"],
+    "bug": ["fighting", "ground", "grass"],
+    "ghost": ["normal", "fighting", "poison", "bug"],
+    "steel": ["poison", "normal", "flying", "rock", "steel", "grass", "psychic", "ice", "dragon", "fairy"],
+    "electro": ["flying", "steel", "electro"],
+    "psychic": ["fighting", "psychic"],
+    "ice": ["ice"],
+    "dragon": ["fire", "water", "grass", "electro"],
+    "dark": ["psychic", "ghost", "dark"],
+    "fairy": ["dragon", "fighting", "bug", "dark"]
+}
 
 
 
 class Pokemon:
-    def __init__(self, name, type, hp, defe, atk, res, weak):
+    def __init__(self, name, type, hp, defe, atk):
         self.name = name
         self.type = type
         self.hp = hp
         self.defe = defe
         self.atk = atk
-        self.res = res
-        self.weak = weak
+        self.res = resdict[f"{self.type}"]
+        self.weak = weakdict[f"{self.type}"]
 
 
 class pokemon_moves():
@@ -132,8 +172,8 @@ class pokemon_moves():
 
 
 class Poke1(pokemon_moves, Pokemon):
-    def __init__(self, name, type, hp, defe, atk, res, weak, moveone, movetwo, movethree, movefour):
-        Pokemon.__init__(self, name, type, hp, defe, atk, res, weak)
+    def __init__(self, name, type, hp, defe, atk, moveone, movetwo, movethree, movefour):
+        Pokemon.__init__(self, name, type, hp, defe, atk,)
         self.moveone = moveone
         self.movetwo = movetwo
         self.movethree = movethree
@@ -201,16 +241,16 @@ def enemymovex():
 def create_mons():
     global enemy, char
     if starter == "bulbasaur":
-        enemy = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", "tackle", "bubblebeam")
-        char = Poke1("Bulbasaur", "grass", 80, 60, 75, ["water", "grass"], ["fire", "flying"], "tackle", "grasswhip", None, None)
+        enemy = Poke1("Squirtle", "water", 75, 80, 60, "tackle", "bubblebeam", "tackle", "bubblebeam")
+        char = Poke1("Bulbasaur", "grass", 80, 60, 75, "tackle", "grasswhip", None, None)
 
     if starter == "squirtle":
-        enemy = Poke1("Charmander", "fire", 70, 75, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", "tackle", "ember")
-        char = Poke1("Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", None, None)
+        enemy = Poke1("Charmander", "fire", 70, 75, 80, "tackle", "ember", "tackle", "ember")
+        char = Poke1("Squirtle", "water", 75, 80, 60, "tackle", "bubblebeam", None, None)
 
     if starter == "charmander":
-        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, ["water", "grass"], ["fire", "flying"], "tackle", "grasswhip", "tackle", "grasswhip")
-        char = Poke1("Charmander", "fire", 80, 80, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", None, None)
+        enemy = Poke1("Bulbasaur", "grass", 80, 80, 80, "tackle", "grasswhip", "tackle", "grasswhip")
+        char = Poke1("Charmander", "fire", 80, 80, 80, "tackle", "ember", None, None)
 
 
 
@@ -364,17 +404,17 @@ def game():
 
 def charchoose(stats):
     global char
-    char = Poke1(stats[0],stats[1],stats[2],stats[3],stats[4],stats[5],stats[6],stats[7],stats[8],stats[9],stats[10])
+    char = Poke1(stats[0],stats[1],stats[2],stats[3],stats[4],stats[5],stats[6],stats[7],stats[8])
     clear_frame()
     custombuttonenemy(
-        ["Squirtle", "water", 75, 80, 60, ["fire", "water"], ["grass", "elektro"], "tackle", "bubblebeam", None, None], 0,
+        ["Squirtle", "water", 75, 80, 60, "tackle", "bubblebeam", None, None], 0,
         0)
     custombuttonenemy(
-        ["Charmander", "fire", 70, 65, 80, ["grass", "fire"], ["water", "test"], "tackle", "ember", None, None], 0, 1)
+        ["Charmander", "fire", 70, 65, 80, "tackle", "ember", None, None], 0, 1)
     custombuttonenemy(
-        ["Bulbasaur", "grass", 80, 60, 75, ["water", "grass"], ["fire", "test"], "tackle", "grasswhip", None, None], 0,
+        ["Bulbasaur", "grass", 80, 60, 75, "tackle", "grasswhip", None, None], 0,
         2)
-    custombuttonenemy(["Pikachu", "elektro", 90, 55, 82, ["elektro", "grass"], ["water", "flying"], "tackle", "elektro_ball", "grasswhip", None], 0, 3)
+    custombuttonenemy(["Pikachu", "electro", 90, 55, 82, "tackle", "electro_ball", "grasswhip", None], 0, 3)
 
 
     
@@ -387,12 +427,11 @@ def custombuttonchar(stats , loc1, loc2):
 
 def enemychoose(stats):
     global enemy
-    if stats[9] == None:
-        stats[9] = stats[7]
-    if stats[10] == None:
-        stats[10] = stats[8]
-    enemy = Poke1(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], stats[8], stats[9],
-                 stats[10])
+    if stats[7] == None:
+        stats[7] = stats[5]
+    if stats[8] == None:
+        stats[8] = stats[6]
+    enemy = Poke1(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], stats[8])
     clear_frame()
     game()
 
@@ -410,12 +449,11 @@ def customgame():
     customg_text.set("Custom choosen")
 
     clear_frame()
-    custombuttonchar(["Squirtle", "water", 75, 80, 60, ["fire", "test"], ["grass", "elektro"], "tackle", "bubblebeam", None, None],
+    custombuttonchar(["Squirtle", "water", 75, 80, 60, "tackle", "bubblebeam", None, None],
                      0, 0)
-    custombuttonchar(["Charmander", "fire", 70, 75, 80, ["grass", "test"], ["water", "test"], "tackle", "ember", None, None], 0, 1)
-    custombuttonchar(["Bulbasaur", "grass", 80, 60, 75, ["water", "test"], ["fire", "test"], "tackle", "grasswhip", None, None], 0, 2)
-    custombuttonchar(
-        ["Pikachu", "elektro", 90, 55, 82, ["elektro", "grass"], ["water", "flying"], "tackle", "elektro_ball",
+    custombuttonchar(["Charmander", "fire", 70, 75, 80, "tackle", "ember", None, None], 0, 1)
+    custombuttonchar(["Bulbasaur", "grass", 80, 60, 75, "tackle", "grasswhip", None, None], 0, 2)
+    custombuttonchar(["Pikachu", "electro", 90, 55, 82, "tackle", "elektro_ball",
          "grasswhip", None], 0, 3)
 
 
@@ -481,6 +519,19 @@ customg_button.grid(column=1, row=2)
 
 
 window.mainloop()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
