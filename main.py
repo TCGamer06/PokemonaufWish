@@ -2,9 +2,21 @@ import random
 import time
 import tkinter as tk
 
-
-
 findmg = None
+
+
+attackdict = {}
+def add_attack(name, damage, typev):
+    attackdict[name] = {"damage": damage, "typev": typev}
+
+
+add_attack("tackle", 30, "normal")
+add_attack("grasswhip", 40, "grass")
+add_attack("bubblebeam", 40, "water")
+add_attack("ember", 40, "fire")
+add_attack("electro_ball", 40, "electro")
+
+
 
 weakdict = {
     "normal": ["fighting"],
@@ -95,80 +107,15 @@ class pokemon_moves:
         round(enemy.hp, 2)
         print(enemy.hp)
 
-    def tackle(self):
-        self.typev = "normal"
-        self.dmg = 30
-
-    def grasswhip(self):
-        # grasswhip
-        self.typev = "grass"
-        self.dmg = 40
-
-    def bubblebeam(self):
-        # bubblebeam
-        self.typev = "water"
-        self.dmg = 40
-
-    def ember(self):
-        # ember
-        self.typev = "fire"
-        self.dmg = 40
-
-    def elektro_ball(self):
-        # elektro ball
-        self.typev = "elektro"
-        self.dmg = 40
-
     def run_attack(self, move, user):
-        match move:
-            case "tackle":
-                pokemon_moves.tackle(self)
-                if user == "char":
-                    pokemon_moves.charatk(self)
-                elif user == "enemy":
-                    pokemon_moves.enemyatk(self)
-                print(self.name + " used Tackle")
 
-            case "grasswhip":
-                pokemon_moves.grasswhip(self)
-                if user == "char":
-                    pokemon_moves.charatk(self)
-                elif user == "enemy":
-                    pokemon_moves.enemyatk(self)
-                print(self.name + " used Grasswhip")
-
-            case "bubblebeam":
-                pokemon_moves.bubblebeam(self)
-                if user == "char":
-                    pokemon_moves.charatk(self)
-                elif user == "enemy":
-                    pokemon_moves.enemyatk(self)
-                print(self.name + " used Bubblebeam")
-
-            case "ember":
-                pokemon_moves.ember(self)
-                if user == "char":
-                    pokemon_moves.charatk(self)
-                elif user == "enemy":
-                    pokemon_moves.enemyatk(self)
-                print(self.name + " used Ember")
-            case "elektro_ball":
-                pokemon_moves.elektro_ball(self)
-                if user == "char":
-                    pokemon_moves.charatk(self)
-                elif user == "enemy":
-                    pokemon_moves.enemyatk(self)
-                print(self.name + " used Elektro Ball")
-                
-                    
-        
-        
-            
-        
-            
-        
-            
-        
+        self.dmg = attackdict[f"{move}"]["damage"]
+        self.typev = attackdict[f"{move}"]["typev"]
+        if user == "char":
+            pokemon_moves.charatk(self)
+        elif user == "enemy":
+            pokemon_moves.enemyatk(self)
+        print(self.name + f" used {move}")
 
 
 class Poke1(pokemon_moves, Pokemon):
@@ -453,8 +400,7 @@ def customgame():
                      0, 0)
     custombuttonchar(["Charmander", "fire", 70, 75, 80, "tackle", "ember", None, None], 0, 1)
     custombuttonchar(["Bulbasaur", "grass", 80, 60, 75, "tackle", "grasswhip", None, None], 0, 2)
-    custombuttonchar(["Pikachu", "electro", 90, 55, 82, "tackle", "elektro_ball",
-         "grasswhip", None], 0, 3)
+    custombuttonchar(["Pikachu", "electro", 90, 55, 82, "tackle", "electro_ball", "grasswhip", None], 0, 3)
 
 
 
