@@ -61,7 +61,7 @@ class Pokemon:
         self.weak = weakdict[f"{self.type}"]
 
 
-class pokemon_moves():
+class pokemon_moves:
     def __init__(self):
         pass
 
@@ -404,7 +404,7 @@ def game():
 
 def charchoose(stats):
     global char
-    char = Poke1(stats[0],stats[1],stats[2],stats[3],stats[4],stats[5],stats[6],stats[7],stats[8])
+    char = Poke1(stats[0], stats[1], stats[2], stats[3], stats[4], stats[5], stats[6], stats[7], stats[8])
     clear_frame()
     custombuttonenemy(
         ["Squirtle", "water", 75, 80, 60, "tackle", "bubblebeam", None, None], 0,
@@ -420,7 +420,7 @@ def charchoose(stats):
     
 
 def custombuttonchar(stats , loc1, loc2):
-    poke = tk.Button(window, text=stats[0], command=lambda:charchoose(stats),font="Raleway", bg="violet", fg="white",
+    poke = tk.Button(window, text=stats[0], command=lambda: charchoose(stats), font="Raleway", bg="violet", fg="white",
                     height=2, width=15)
     poke.grid(column=loc1, row=loc2)
 
