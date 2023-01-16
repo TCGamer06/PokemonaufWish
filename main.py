@@ -1,11 +1,34 @@
 import random
-import time
 import tkinter as tk
+from pygame import mixer
+import threading
+import time
+
 
 findmg = None
+musplay = 0
+game_over = 0
 
 
 attackdict = {}
+
+
+
+def music(x):
+    global musvar
+    global musplay
+
+    if musplay == 1:
+        mixer.init()
+        mixer.music.load(x)
+        mixer.music.play()
+
+    if game_over == 1:
+        mixer.music.set_volume(0)
+
+
+
+
 def add_attack(name, damage, typev):
     attackdict[name] = {"damage": damage, "typev": typev}
 
@@ -224,6 +247,12 @@ instructions.grid(columnspan=1, column=1, row=0)
 def game():
 
     print("Game started")
+    global musplay
+    musplay = 1
+    music("standart.mp3")
+
+
+
 
     def updatehp():
 
@@ -233,6 +262,19 @@ def game():
         enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
         enemyhp.grid(columnspan=2, column=2, row=3)
 
+    def game_done():
+        global game_over
+        if enemy.hp < 1:
+            game_over = 1
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+        if char.hp < 1:
+            game_over = 1
+            clear_frame()
+            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
+            game.text.grid(columnspan=4, column=2, row=2)
+
     def choosemove1():
         if not enemy.hp < 1 and not char.hp < 1:
             print("You have choosen move 1")
@@ -240,18 +282,7 @@ def game():
             enemymovex()
             updatehp()
 
-        if enemy.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-
-        if char.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-
-
-
+        game_done()
 
     def choosemove2():
         if not enemy.hp < 1 and not char.hp < 1:
@@ -260,14 +291,7 @@ def game():
             enemymovex()
             updatehp()
 
-        if enemy.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-        if char.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
+        game_done()
     
     def choosemove3():
         if not enemy.hp < 1 and not char.hp < 1:
@@ -276,14 +300,7 @@ def game():
             enemymovex()
             updatehp()
 
-        if enemy.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-        if char.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
+        game_done()
     
     def choosemove4():
         if not enemy.hp < 1 and not char.hp < 1:
@@ -292,19 +309,7 @@ def game():
             enemymovex()
             updatehp()
 
-        if enemy.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-        if char.hp < 1:
-            clear_frame()
-            game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
-            game.text.grid(columnspan=4, column=2, row=2)
-
-    
-
-
-
+        game_done()
 
     screen = tk.Canvas(window, width=1600, height=900)
     screen.grid(columnspan=4, rowspan=4)
@@ -401,6 +406,9 @@ def customgame():
     custombuttonchar(["Charmander", "fire", 70, 75, 80, "tackle", "ember", None, None], 0, 1)
     custombuttonchar(["Bulbasaur", "grass", 80, 60, 75, "tackle", "grasswhip", None, None], 0, 2)
     custombuttonchar(["Pikachu", "electro", 90, 55, 82, "tackle", "electro_ball", "grasswhip", None], 0, 3)
+
+
+
 
 
 
