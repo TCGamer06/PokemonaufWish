@@ -1,4 +1,5 @@
 import random
+import sys
 import tkinter as tk
 from pygame import mixer
 import threading
@@ -13,7 +14,6 @@ game_over = 0
 attackdict = {}
 
 
-
 def music(x):
     global musvar
     global musplay
@@ -22,11 +22,6 @@ def music(x):
         mixer.init()
         mixer.music.load(x)
         mixer.music.play()
-
-    if game_over == 1:
-        mixer.music.set_volume(0)
-
-
 
 
 def add_attack(name, damage, typev):
@@ -38,7 +33,6 @@ add_attack("grasswhip", 40, "grass")
 add_attack("bubblebeam", 40, "water")
 add_attack("ember", 40, "fire")
 add_attack("electro_ball", 40, "electro")
-
 
 
 weakdict = {
@@ -82,7 +76,6 @@ resdict = {
     "dark": ["psychic", "ghost", "dark"],
     "fairy": ["dragon", "fighting", "bug", "dark"]
 }
-
 
 
 class Pokemon:
@@ -190,24 +183,6 @@ class Poke1(pokemon_moves, Pokemon):
         pokemon_moves.run_attack(self, move=move, user=user)
 
 
-def enemymovex():
-    enemymove = random.randrange(1, 5)
-    if enemymove == 1:
-        print(f"{enemy.name} has choosen move 1")
-        enemy.move1enemy()
-
-    if enemymove == 2:
-        print(f"{enemy.name} has choosen move 2")
-        enemy.move2enemy()
-
-    if enemymove == 3:
-        print(f"{enemy.name} has choosen move 3")
-        enemy.move3enemy()
-
-    if enemymove == 4:
-        print(f"{enemy.name} has choosen move 4")
-        enemy.move4enemy()
-
 def create_mons():
     global enemy, char
     if starter == "bulbasaur":
@@ -251,33 +226,48 @@ def game():
     musplay = 1
     music("standart.mp3")
 
+    def enemymovex():
+        enemymove = random.randrange(1, 5)
+        if enemymove == 1:
+            logging(f"\n {enemy.name} has used {enemy.moveone}", "enemy")
+            enemy.move1enemy()
 
+        if enemymove == 2:
+            logging(f"\n {enemy.name} has used {enemy.movetwo}", "enemy")
+            enemy.move2enemy()
 
+        if enemymove == 3:
+            logging(f"\n {enemy.name} has used {enemy.movethree}", "enemy")
+            enemy.move3enemy()
+
+        if enemymove == 4:
+            logging(f"\n {enemy.name} has used {enemy.movefour}", "enemy")
+            enemy.move4enemy()
 
     def updatehp():
 
         charhp = tk.Label(window, text=char.name + "  " + str(int(char.hp)), font="Raleway")
-        charhp.grid(columnspan=2, column=0, row=1)
+        charhp.grid(columnspan=2, column=0, row=2)
 
         enemyhp = tk.Label(window, text=enemy.name + "  " + str(int(enemy.hp)), font="Raleway")
-        enemyhp.grid(columnspan=2, column=2, row=3)
+        enemyhp.grid(columnspan=2, column=2, row=4)
 
     def game_done():
         global game_over
         if enemy.hp < 1:
-            game_over = 1
+            mixer.music.pause()
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
         if char.hp < 1:
-            game_over = 1
+            mixer.music.pause()
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
 
     def choosemove1():
         if not enemy.hp < 1 and not char.hp < 1:
-            print("You have choosen move 1")
+            logging(f"\n {char.name} has used {char.moveone}", "char")
             char.move1()
             enemymovex()
             updatehp()
@@ -286,7 +276,7 @@ def game():
 
     def choosemove2():
         if not enemy.hp < 1 and not char.hp < 1:
-            print("You have choosen move 2")
+            logging(f"\n {char.name} has used {char.movetwo}", "char")
             char.move2()
             enemymovex()
             updatehp()
@@ -295,7 +285,7 @@ def game():
     
     def choosemove3():
         if not enemy.hp < 1 and not char.hp < 1:
-            print("You have choosen move 3")
+            logging(f"\n {char.name} has used {char.movethree}", "char")
             char.move3()
             enemymovex()
             updatehp()
@@ -304,21 +294,35 @@ def game():
     
     def choosemove4():
         if not enemy.hp < 1 and not char.hp < 1:
-            print("You have choosen move 4")
+            logging(f"\n {char.name} has used {char.movefour}", "char")
             char.move4()
             enemymovex()
             updatehp()
 
         game_done()
 
+    def logging(logged, tag):
+        log.insert(tk.END, "\n" + str(logged), tag)
+        log.see("end")
+
+
     screen = tk.Canvas(window, width=1600, height=900)
-    screen.grid(columnspan=4, rowspan=4)
+    screen.grid(columnspan=4, rowspan=5)
+
+    log = tk.Text(window, height=5, background="black", foreground="white")
+    log.grid(columnspan=4, column=0, row=0)
+    log.tag_config("N", foreground="white")
+    log.tag_config("enemy", foreground="red")
+    log.tag_config("char", foreground="cyan")
+
+
+    logging("Game started", "N")
 
     charsprite = tk.Label(window, image=spritedict[f"{char.name.lower()}"])
-    charsprite.grid(columnspan=2, column=0, row=0)
+    charsprite.grid(columnspan=2, column=0, row=1)
 
     enemysprite = tk.Label(window, image=spritedict[f"{enemy.name.lower()}"])
-    enemysprite.grid(columnspan=2, column=2, row=2)
+    enemysprite.grid(columnspan=2, column=2, row=3)
 
     updatehp()
 
@@ -326,25 +330,25 @@ def game():
     move1button = tk.Button(window, textvariable=move1_text, command=lambda: choosemove1(), font="Raleway",
                             bg="yellow", fg="black", height=2, width=15)
     move1_text.set(char.moveone[0].upper() + char.moveone[1:])
-    move1button.grid(columnspan=2, column=4, row=0)
+    move1button.grid(columnspan=2, column=4, row=1)
 
     move2_text = tk.StringVar()
     move2button = tk.Button(window, textvariable=move2_text, command=lambda: choosemove2(), font="Raleway",
                             bg="yellow", fg="black", height=2, width=15)
     move2_text.set(char.movetwo[0].upper() + char.movetwo[1:])
-    move2button.grid(columnspan=2, column=4, row=1)
+    move2button.grid(columnspan=2, column=4, row=2)
 
     move3_text = tk.StringVar()
     move3button = tk.Button(window, textvariable=move3_text, command=lambda: choosemove3(), font="Raleway",
                             bg="yellow", fg="black", height=2, width=15)
     move3_text.set(char.movethree[0].upper() + char.movethree[1:])
-    move3button.grid(columnspan=2, column=4, row=2)
+    move3button.grid(columnspan=2, column=4, row=3)
 
     move4_text = tk.StringVar()
     move4button = tk.Button(window, textvariable=move4_text, command=lambda: choosemove4(), font="Raleway",
-                            bg="yellow", fg="black", height=4, width=15)
+                            bg="yellow", fg="black", height=2, width=15)
     move4_text.set(char.movefour[0].upper() + char.movefour[1:])
-    move4button.grid(columnspan=4, column=4, row=3)
+    move4button.grid(columnspan=4, column=4, row=4)
 
 
 
