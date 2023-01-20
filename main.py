@@ -2,7 +2,6 @@ import random
 import sys
 import tkinter as tk
 from pygame import mixer
-import threading
 import time
 
 
