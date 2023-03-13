@@ -1,8 +1,7 @@
 import random
-import sys
 import tkinter as tk
 from pygame import mixer
-import time
+
 
 
 findmg = None
@@ -130,7 +129,7 @@ class pokemon_moves:
             pokemon_moves.charatk(self)
         elif user == "enemy":
             pokemon_moves.enemyatk(self)
-        print(self.name + f" used {move}")
+
 
 
 class Poke1(pokemon_moves, Pokemon):
@@ -197,14 +196,13 @@ def create_mons():
         char = Poke1("Charmander", "fire", 80, 80, 80, "tackle", "ember", None, None)
 
 
-
 window = tk.Tk()
 
 spritedict = {
-    "charmander" : tk.PhotoImage(file="charmander.png", height=150, width=150),
-    "bulbasaur" : tk.PhotoImage(file="bulbasaur.png", height=150, width=150),
-    "squirtle" : tk.PhotoImage(file="squirtle.png", height=150, width=150),
-    "pikachu" : tk.PhotoImage(file="pikachu.png", height=150, width=150)
+    "charmander": tk.PhotoImage(file="charmander.png", height=150, width=150),
+    "bulbasaur": tk.PhotoImage(file="bulbasaur.png", height=150, width=150),
+    "squirtle": tk.PhotoImage(file="squirtle.png", height=150, width=150),
+    "pikachu": tk.PhotoImage(file="pikachu.png", height=150, width=150)
 }
 
 
