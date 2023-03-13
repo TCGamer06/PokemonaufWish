@@ -225,8 +225,37 @@ def game():
     musplay = 1
     music("standart.mp3")
 
+    def check_effect(list):
+
+        vars = list
+        seff = []
+        neff = []
+        res = []
+
+        i = 0
+        for var in vars:
+            i += 1
+            if var in weakdict[f"{char.type}"]:
+                seff.append(i)
+            elif var in resdict[f"{char.type}"]:
+                res.append(i)
+            else:
+                neff.append(i)
+
+        if len(seff) > 0:
+            return_var = random.choice(seff)
+        elif len(neff) > 0:
+            return_var = random.choice(neff)
+        else:
+            return_var = random.choice(res)
+
+        return return_var
+
     def enemymovex():
-        enemymove = random.randrange(1, 5)
+
+        avtypes = [attackdict[f"{enemy.moveone}"]["typev"], attackdict[f"{enemy.movetwo}"]["typev"], attackdict[f"{enemy.movethree}"]["typev"], attackdict[f"{enemy.movefour}"]["typev"]]
+        enemymove = check_effect(avtypes)
+
         if enemymove == 1:
             logging(f"\n {enemy.name} has used {enemy.moveone}", "enemy")
             enemy.move1enemy()
@@ -254,12 +283,12 @@ def game():
     def game_done():
         global game_over
         if enemy.hp < 1:
-            mixer.music.pause()
+            #mixer.music.pause()
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Won"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
         if char.hp < 1:
-            mixer.music.pause()
+            #mixer.music.pause()
             clear_frame()
             game.text = tk.Label(window, text=("You´ve Lost"), font=('consolas', 40))
             game.text.grid(columnspan=4, column=2, row=2)
